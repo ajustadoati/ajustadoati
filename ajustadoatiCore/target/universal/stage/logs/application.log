@@ -1,0 +1,42 @@
+2016-06-03 15:20:17,971 - [INFO] - from play in main 
+Application started (Prod)
+
+2016-06-03 15:20:18,143 - [INFO] - from play in main 
+Listening for HTTP on /0:0:0:0:0:0:0:0:9000
+
+2016-06-03 15:21:47,366 - [INFO] - from application in play-akka.actor.default-dispatcher-4 
+BUscando data
+
+2016-06-03 15:21:51,649 - [INFO] - from application in play-akka.actor.default-dispatcher-4 
+listaList(Proveedor(Usuario(richard,richardroj@gmail.com,8.623638153076172,-71.10626220703125,richardp,richardp,@richardroj,0928282),List(Categoria(nueva,nueva))), Proveedor(Usuario(richard a,richardr@me.com,8.623638153076172,-71.10626220703125,richarda,richarda,@richardra,0928282),List(Categoria(nueva,nueva))), Proveedor(Usuario(Elba,elba.bautista1@gmail.com,8.623638153076172,-71.10626220703125,elbapa,elbapa,@elba,0928282),List(Categoria(nueva,nueva))))
+
+2016-06-03 15:21:59,333 - [INFO] - from application in play-akka.actor.default-dispatcher-4 
+BUscando data
+
+2016-06-03 15:21:59,658 - [INFO] - from application in play-akka.actor.default-dispatcher-4 
+listaList(Proveedor(Usuario(richard,richardroj@gmail.com,8.623638153076172,-71.10626220703125,richardp,richardp,@richardroj,0928282),List(Categoria(nueva,nueva))), Proveedor(Usuario(richard a,richardr@me.com,8.623638153076172,-71.10626220703125,richarda,richarda,@richardra,0928282),List(Categoria(nueva,nueva))), Proveedor(Usuario(Elba,elba.bautista1@gmail.com,8.623638153076172,-71.10626220703125,elbapa,elbapa,@elba,0928282),List(Categoria(nueva,nueva))))
+
+2016-06-03 15:22:04,993 - [INFO] - from application in play-akka.actor.default-dispatcher-6 
+BUscando data
+
+2016-06-03 15:22:05,245 - [INFO] - from application in play-akka.actor.default-dispatcher-6 
+listaList(Proveedor(Usuario(richard,richardroj@gmail.com,8.623638153076172,-71.10626220703125,richardp,richardp,@richardroj,0928282),List(Categoria(nueva,nueva))), Proveedor(Usuario(richard a,richardr@me.com,8.623638153076172,-71.10626220703125,richarda,richarda,@richardra,0928282),List(Categoria(nueva,nueva))), Proveedor(Usuario(Elba,elba.bautista1@gmail.com,8.623638153076172,-71.10626220703125,elbapa,elbapa,@elba,0928282),List(Categoria(nueva,nueva))))
+
+2016-06-03 15:22:14,663 - [INFO] - from application in play-akka.actor.default-dispatcher-6 
+BUscando data
+
+2016-06-03 15:22:14,959 - [INFO] - from application in play-akka.actor.default-dispatcher-6 
+listaList(Categoria(Audio y Video,Audio y Video), Categoria(Hotel y Posada,Hotel y Posada))
+
+2016-06-03 15:28:19,228 - [INFO] - from application in play-akka.actor.default-dispatcher-7 
+BUscando data
+
+2016-06-03 15:28:20,677 - [INFO] - from application in play-akka.actor.default-dispatcher-7 
+listaList(Categoria(Audio y Video,Audio y Video), Categoria(Hotel y Posada,Hotel y Posada))
+
+2016-06-03 15:28:25,886 - [INFO] - from application in play-akka.actor.default-dispatcher-9 
+BUscando data
+
+2016-06-03 15:28:26,214 - [INFO] - from application in play-akka.actor.default-dispatcher-9 
+listaList(Proveedor(Usuario(richard,richardroj@gmail.com,8.623638153076172,-71.10626220703125,richardp,richardp,@richardroj,0928282),List(Categoria(nueva,nueva))), Proveedor(Usuario(richard a,richardr@me.com,8.623638153076172,-71.10626220703125,richarda,richarda,@richardra,0928282),List(Categoria(nueva,nueva))), Proveedor(Usuario(Elba,elba.bautista1@gmail.com,8.623638153076172,-71.10626220703125,elbapa,elbapa,@elba,0928282),List(Categoria(nueva,nueva))))
+

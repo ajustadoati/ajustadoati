@@ -1,0 +1,37 @@
+<ion-view title="Registro Usuario">
+    <ion-content overflow-scroll="true" padding="true" scroll="false" class="has-header">
+        <form class="list" name="newUsuarioForm">
+            <ion-list>
+                <label class="item item-input">
+                    <span class="input-label">Nombre</span>
+                    <input type="text" ng-model="usuario.nombre" placeholder="">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Email</span>
+                    <input type="text" ng-model="usuario.email" placeholder="">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Twitter</span>
+                    <input type="text" ng-model="usuario.twitter" placeholder="">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Telefono</span>
+                    <input type="text" ng-model="usuario.telefono" placeholder="">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Username</span>
+                    <input type="text" ng-model="usuario.user" placeholder="">
+                </label>
+                <label class="item item-input">
+                    <span class="input-label">Password</span>
+                    <input type="text" ng-model="usuario.password"  placeholder="">
+                </label>
+            </ion-list>
+            <input type="submit"
+                       class="button button-stable button-block "
+                       ng-click="crearUsuario(newUsuarioForm);"
+                       value='Guardar'/>
+            
+        </form>
+    </ion-content>
+</ion-view>
