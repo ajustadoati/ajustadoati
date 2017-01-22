@@ -189,6 +189,7 @@ angular.module('app.controllers', [])
   $scope.consulta.usuario={};
   $scope.consulta.categoria={};
   $scope.proveedores=[];
+  $scope.map={};
 
 
   var ws = new WebSocket('ws://localhost:8080/ajustadoatiWS/openfire');
@@ -221,12 +222,41 @@ angular.module('app.controllers', [])
         console.log('close code=' + event.code);
     };
 
+     $scope.addLocation= function(latitud, longitud){
+          console.log("creando la location del proveedor");
+          
+              
+                var latLng = new google.maps.LatLng(latitud, longitud);
+   
+               
+                google.maps.event.addListenerOnce($scope.map, 'idle', function(){
+                   console.log("listeners");
+                  var marker = new google.maps.Marker({
+                    map: $scope.map,
+                    animation: google.maps.Animation.DROP,
+                    position: latLng
+                });      
+               
+                var infoWindow = new google.maps.InfoWindow({
+                    content: "Yo vendo!"
+                });
+               
+              google.maps.event.addListener(marker, 'click', function () {
+                  infoWindow.open($scope.map, marker);
+              });
+            });
+           // $scope.map.markers.push(marker);
+            //refresh(marker);
+          
+        }
 
   //$scope.proveedor.usuario={};
   //$scope.proveedor.categorias=[];
 
  
       //cargando mapa desde el service
+
+
       MapService.createByCurrentLocation(function (marker) {
                 console.log("Llamando al service");
                 marker.options.labelContent = 'Usted esta aqu&iacute;';
@@ -252,7 +282,7 @@ angular.module('app.controllers', [])
               });      
              
               var infoWindow = new google.maps.InfoWindow({
-                  content: "Here I am!"
+                  content: "Servidor!"
               });
              
             google.maps.event.addListener(marker, 'click', function () {

@@ -30,12 +30,12 @@ public class OFEndpoint {
 	private final Logger log = Logger.getLogger(getClass().getName());
 	private Connection connection;
 	public OFEndpoint(){
-		this.connection=new XMPPConnection("ajustadoati.sytes.net");
+		this.connection=new XMPPConnection("ajustadoati.com");
 		
 		try{
 			log.info("conectando a server openfire");
 			this.connection.connect();
-			this.connection.login("admin@ajustadoati.sytes.net", "Dexter876.");
+			this.connection.login("admin@ajustadoati.com", "Dexter876");
 			log.info("Conectado");
 		}catch(XMPPException e){
 			System.out.println("Error Conectando "+e.getMessage());
@@ -70,7 +70,7 @@ public class OFEndpoint {
 		
         for(String user : result){
         	log.info(">"+user+"<");
-            user=user+"@ajustadoati.sytes.net";
+            user=user+"@ajustadoati.com";
             log.info("User: "+user);
            
             Chat newChat = chatmanager.createChat(user, new MessageListener() {   			
