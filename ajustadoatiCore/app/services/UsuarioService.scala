@@ -38,7 +38,7 @@ trait UsuarioServiceComponentImpl extends UsuarioServiceComponent {
               "username" -> usuario.user,
               "password" -> usuario.password
             )
-            val futureResponse: Future[WSResponse] = WS.url("http://ajustadoati.com:9090/plugins/restapi/v1/users").withHeaders("Authorization" -> ("5giIwLv58kj4nNIN")).post(data)
+            val futureResponse: Future[WSResponse] = WS.url("http://ajustadoati.com:9090/plugins/restapi/v1/users").withHeaders("Authorization" -> ("EX5JIBA5lUfz3GSD")).post(data)
             Logger.info("Guardando usuario en Jabber: "+futureResponse.toString)
             usuarioRepository.createUsuario(usuario)
         }
