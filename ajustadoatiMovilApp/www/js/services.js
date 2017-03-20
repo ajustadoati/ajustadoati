@@ -7,7 +7,7 @@ angular.module('app.services', [])
 
 .factory('usuarioService', ['$http', function ($http) {
 
-  var url = 'http://localhost:9000/ajustadoati/usuario/';
+  var url = 'https://www.ajustadoati.com:9000/ajustadoati/usuario/';
 
   var usuarioService ={};
 
@@ -27,7 +27,7 @@ return usuarioService;
 
 .factory('proveedorService', ['$http', function ($http) {
 
-  var url = 'http://localhost:9000/ajustadoati/proveedor/';
+  var url = 'https://www.ajustadoati.com:9000/ajustadoati/proveedor/';
 
   var proveedorService ={};
 
@@ -46,7 +46,7 @@ return proveedorService;
 }])
 .factory('consultaService', ['$http', function ($http) {
 
-  var url = 'http://localhost:9000/ajustadoati/consulta/';
+  var url = 'https://www.ajustadoati.com:9000/ajustadoati/consulta/';
 
   var consultaService ={};
 
@@ -63,7 +63,7 @@ return consultaService;
 }])
 .factory('categoriaService', ['$http', function ($http) {
 console.log("Service: Getting gategorias")
-  var url = 'http://localhost:9000/ajustadoati/categoria/';
+  var url = 'https://www.ajustadoati.com:9000/ajustadoati/categoria/';
 
   var categoriaService ={};
 

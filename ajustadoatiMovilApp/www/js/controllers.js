@@ -192,7 +192,7 @@ angular.module('app.controllers', [])
   $scope.map={};
 
 
-  var ws = new WebSocket('ws://localhost:8080/ajustadoatiWS/openfire');
+  var ws = new WebSocket('ws://www.ajustadoati.com:8080/ajustadoatiWS/openfire');
 
     ws.onopen = function () {
         console.log('open');

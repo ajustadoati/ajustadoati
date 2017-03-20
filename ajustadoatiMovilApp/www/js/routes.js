@@ -74,8 +74,8 @@ angular.module('app.routes', [])
       url: '/requests',
       views: {
         'tab4': {
-          templateUrl: 'templates/solicitudes.html',
-          controller: 'solicitudesCtrl'
+          templateUrl: 'templates/busqueda.html',
+          controller: 'busquedaCtrl'
         }
       }
     })
@@ -89,7 +89,7 @@ angular.module('app.routes', [])
       views: {
         'tab5': {
           templateUrl: 'templates/ubicacion.html',
-          controller: 'ubicacióNCtrl'
+          controller: 'ubicacionCtrl'
         }
       }
     })
