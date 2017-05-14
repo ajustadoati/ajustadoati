@@ -1,0 +1,3 @@
+[submodule "ajustadoatiSite"]
+	path = ajustadoatiSite
+	url = ../../angular/angular-seed.git
