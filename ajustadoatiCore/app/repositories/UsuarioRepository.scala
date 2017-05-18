@@ -39,7 +39,7 @@ trait UsuarioRepositoryComponentImpl extends UsuarioRepositoryComponent with Con
         
             //Cypher("""CREATE (cl:Cliente { nombre: {nombre}, email: {email}, twitter: {twitter}, telefono:{telefono}, latitud:{latitud}, longitud:{longitud}}) CREATE (pr:Producto {nombre:{pnombre}, descripcion:{descripcion}}) CREATE (cl)-[:BUSCO]->(pr)""").on("nombre"->cliente.nombre, "email"->cliente.email, "twitter"->cliente.twitter, "latitud"->cliente.latitud.toFloat, "longitud"->cliente.longitud.toFloat, "pnombre"->producto.nombre, "descripcion"->producto.descripcion).execute()
             //CREATE (pr:Producto {nombre:{pnombre}, descripcion:{descripcion}})//, "pnombre"->producto.nombre, "descripcion"->producto.descripcion
-            val result = Cypher("""CREATE (aa:Usuario {nombre:{nombre}, email:{email}, latitud:{latitud}, longitud:{longitud}, user:{user}, password:{password}, twitter:{twitter}, telefono:{telefono}})""").on("nombre"->usuario.nombre, "email"->usuario.email,"latitud"->usuario.latitud.toFloat, "longitud"->usuario.longitud.toFloat, "user"->usuario.user, "password"->usuario.password, "twitter"->usuario.twitter, "telefono"->usuario.telefono).execute()
+            val result = Cypher("""CREATE (aa:Usuario {nombre:{nombre}, email:{email}, latitud:{latitud}, longitud:{longitud}, user:{user}, password:{password}, telefono:{telefono}})""").on("nombre"->usuario.nombre, "email"->usuario.email,"latitud"->usuario.latitud.toFloat, "longitud"->usuario.longitud.toFloat, "user"->usuario.user, "password"->usuario.password, "telefono"->usuario.telefono).execute()
             
              
             if(result==true)
@@ -54,31 +54,31 @@ trait UsuarioRepositoryComponentImpl extends UsuarioRepositoryComponent with Con
             //Option(proveedores.get(id))
             Logger.info("Buscando Usuario")         
             
-            val allUsuarios= Cypher("MATCH (n:Usuario) WHERE n.user={user} RETURN n.nombre as nombre, n.email as email, n.latitud as latitud, n.longitud as longitud, n.user as user, n.password as password, n.twitter as twitter, n.telefono as telefono").on("user"->user)().map{     
-                case CypherRow(nombre: String, email: String, latitud:BigDecimal,longitud:BigDecimal, user:String, password:String, twitter:String, telefono:String)=>Usuario(nombre, email, latitud, longitud, user, password, twitter, telefono)     
+            val allUsuarios= Cypher("MATCH (n:Usuario) WHERE n.user={user} RETURN n.nombre as nombre, n.email as email, n.latitud as latitud, n.longitud as longitud, n.user as user, n.password as password, n.telefono as telefono").on("user"->user)().map{     
+                case CypherRow(nombre: String, email: String, latitud:BigDecimal,longitud:BigDecimal, user:String, password:String, telefono:String)=>Usuario(nombre, email, latitud, longitud, user, password, telefono)     
             }
 
             val lista=allUsuarios.toList
             if(lista.size>0)
                     return lista.iterator.next
                 else
-                    return Usuario("nombre", "email", 89222, 82272, "user", "password", "twitter", "04127808193")
+                    return Usuario("nombre", "email", 89222, 82272, "user", "password", "04127808193")
             
         
         }
 
         override def list(): List[Usuario]={
             Logger.info("BUscando data")
-            val allUsuarios = Cypher("MATCH (n:Usuario) RETURN n.nombre as nombre, n.email as email, n.latitud as latitud, n.longitud as longitud, n.user as user, n.password as password, n.twitter as twitter, n.telefono as telefono")().collect{
+            val allUsuarios = Cypher("MATCH (n:Usuario) RETURN n.nombre as nombre, n.email as email, n.latitud as latitud, n.longitud as longitud, n.user as user, n.password as password, n.telefono as telefono")().collect{
 
-                case CypherRow(nombre: String, email: String, latitud:BigDecimal, longitud:BigDecimal, user:String, password:String, twitter:String, telefono:String)=>Usuario(nombre, email, latitud, longitud, user, password, twitter, telefono)
+                case CypherRow(nombre: String, email: String, latitud:BigDecimal, longitud:BigDecimal, user:String, password:String, telefono:String)=>Usuario(nombre, email, latitud, longitud, user, password, telefono)
                 
             }
             val lista=allUsuarios.toList
             if(lista.size>0)
                     return lista
                 else
-                    return List(Usuario("nombre", "email", 89222, 82272, "user", "password", "twitter", "04127808193"))
+                    return List(Usuario("nombre", "email", 89222, 82272, "user", "password", "04127808193"))
             
             
            
