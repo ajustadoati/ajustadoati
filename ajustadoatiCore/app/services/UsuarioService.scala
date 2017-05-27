@@ -22,6 +22,8 @@ trait UsuarioServiceComponent {
 
         def tryFindByUser(user:String):Usuario
 
+        def tryFindByUserAndPassword(user:String, password:String):Usuario
+
     }
 
 }
@@ -50,6 +52,10 @@ trait UsuarioServiceComponentImpl extends UsuarioServiceComponent {
         
         override def tryFindByUser(user: String): Usuario = {
             usuarioRepository.tryFindByUser(user)
+        }
+
+        override def tryFindByUserAndPassword(user: String, password:String): Usuario = {
+            usuarioRepository.tryFindByUserAndPassword(user,password)
         }
         
         

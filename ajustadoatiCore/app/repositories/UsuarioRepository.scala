@@ -19,6 +19,8 @@ trait UsuarioRepositoryComponent {
         def list(): List[Usuario]
 
         def tryFindByUser(user:String):Usuario
+
+        def tryFindByUserAndPassword(user:String, password:String):Usuario
         
     }
 }
@@ -63,6 +65,23 @@ trait UsuarioRepositoryComponentImpl extends UsuarioRepositoryComponent with Con
                     return lista.iterator.next
                 else
                     return Usuario("nombre", "email", 89222, 82272, "user", "password", "04127808193")
+            
+        
+        }
+
+         override def tryFindByUserAndPassword(user: String, password:String): Usuario = {
+            //Option(proveedores.get(id))
+            Logger.info("Buscando Usuario por user y password")         
+            
+            val allUsuarios= Cypher("MATCH (n:Usuario) WHERE n.user={user} and n.password={password} RETURN n.nombre as nombre, n.email as email, n.latitud as latitud, n.longitud as longitud, n.user as user, n.password as password, n.telefono as telefono").on("user"->user, "password"->password)().map{     
+                case CypherRow(nombre: String, email: String, latitud:BigDecimal,longitud:BigDecimal, user:String, password:String, telefono:String)=>Usuario(nombre, email, latitud, longitud, user, password, telefono)     
+            }
+
+            val lista=allUsuarios.toList
+            if(lista.size>0)
+                    return lista.iterator.next
+                else
+                    return null
             
         
         }

@@ -14,6 +14,7 @@ POST	 /ajustadoati/proveedor/                       controllers.Application.save
 GET      /ajustadoati/categoria/                           controllers.Application.listCategorias
 POST	 /ajustadoati/categoria/                       controllers.Application.saveCategoria
 POST	 /ajustadoati/usuario/                       controllers.Application.saveUsuario
+POST	 /ajustadoati/usuario/login/                      controllers.Application.findUsuarioByUserAndPassword
 GET      /ajustadoati/usuario/                           controllers.Application.listUsuarios
 GET      /ajustadoati/usuario/:user                 controllers.Application.findUsuarioByUser(user: String)
 OPTIONS        /*all                                controllers.Application.preflight(all: String)

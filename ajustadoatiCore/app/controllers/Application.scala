@@ -9,6 +9,7 @@ import models.cliente.Cliente
 import models.producto.Producto
 import models.consulta.Consulta
 import models.usuario.Usuario
+import models.usuarioLogin.UsuarioLogin
 import services.proveedor.ProveedorServiceComponentImpl
 import repositories.proveedor.ProveedorRepositoryComponentImpl
 import services.categoria.CategoriaServiceComponentImpl
@@ -33,6 +34,8 @@ object Application extends ProveedorController with ProveedorRepositoryComponent
       }
   implicit val usuarioWrites = Json.writes[Usuario]
   implicit val usuarioReads = Json.reads[Usuario]
+  implicit val usuarioLoginWrites = Json.writes[UsuarioLogin]
+  implicit val usuarioLoginReads = Json.reads[UsuarioLogin]
 
   def saveUsuario = Action(BodyParsers.parse.json) { request =>
       val b = request.body.validate[Usuario]
@@ -63,6 +66,32 @@ object Application extends ProveedorController with ProveedorRepositoryComponent
        
     }
 
+    def findUsuarioByUserAndPassword(user: String, password:String) = Action {
+      Logger.info("Controller: buscando usuario por user  password"+user)
+        val usuario = usuarioService.tryFindByUserAndPassword(user,password)
+       
+            Ok(Json.toJson(usuario))
+       
+    }
+
+    def findUsuarioByUserAndPassword = Action(BodyParsers.parse.json) { request =>
+      val usuarioLogin = request.body.validate[UsuarioLogin]
+
+      usuarioLogin.fold(
+        errors => {
+          BadRequest(Json.obj("status" -> "OK", "message" -> JsError.toFlatJson(errors)))
+        },
+        usuarioLogin => {
+       
+          Logger.info("guardando usuario"+usuarioLogin)
+          val usuario=usuarioService.tryFindByUserAndPassword(usuarioLogin.user, usuarioLogin.password)
+          if(usuario!=null)
+            Ok(Json.toJson(usuario))
+          else
+            Ok(Json.obj("status" -> "Registro no Existe"))
+        }
+      )
+    }
 
     def saveCategoria = Action(BodyParsers.parse.json) { request =>
       val b = request.body.validate[Categoria]
