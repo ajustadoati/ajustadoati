@@ -64,7 +64,7 @@ trait UsuarioRepositoryComponentImpl extends UsuarioRepositoryComponent with Con
             if(lista.size>0)
                     return lista.iterator.next
                 else
-                    return Usuario("nombre", "email", 89222, 82272, "user", "password", "04127808193")
+                    return null
             
         
         }
@@ -97,7 +97,7 @@ trait UsuarioRepositoryComponentImpl extends UsuarioRepositoryComponent with Con
             if(lista.size>0)
                     return lista
                 else
-                    return List(Usuario("nombre", "email", 89222, 82272, "user", "password", "04127808193"))
+                    return null
             
             
            

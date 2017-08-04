@@ -61,18 +61,13 @@ object Application extends ProveedorController with ProveedorRepositoryComponent
     def findUsuarioByUser(user: String) = Action {
       Logger.info("Controller: buscando usuario"+user)
         val usuario = usuarioService.tryFindByUser(user)
-       
+        if(usuario != null)
             Ok(Json.toJson(usuario))
+        else
+            Ok(Json.obj("status" -> "Registro no Existe"))
        
     }
 
-    def findUsuarioByUserAndPassword(user: String, password:String) = Action {
-      Logger.info("Controller: buscando usuario por user  password"+user)
-        val usuario = usuarioService.tryFindByUserAndPassword(user,password)
-       
-            Ok(Json.toJson(usuario))
-       
-    }
 
     def findUsuarioByUserAndPassword = Action(BodyParsers.parse.json) { request =>
       val usuarioLogin = request.body.validate[UsuarioLogin]
