@@ -17,7 +17,7 @@ POST	 /ajustadoati/usuario/                       controllers.Application.saveUs
 POST	 /ajustadoati/usuario/login/                      controllers.Application.findUsuarioByUserAndPassword
 GET      /ajustadoati/usuario/                           controllers.Application.listUsuarios
 GET      /ajustadoati/usuario/:user                 controllers.Application.findUsuarioByUser(user: String)
-GET      /ajustadoati/usuario/:user/contacto/:contacto    controllers.Application.addContact(contact: String, user:String)
+GET      /ajustadoati/usuario/:user/contacto/:contact    controllers.Application.addContact(contact: String, user:String)
 OPTIONS        /*all                                controllers.Application.preflight(all: String)
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file)
