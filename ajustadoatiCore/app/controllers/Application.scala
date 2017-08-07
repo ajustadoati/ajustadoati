@@ -88,6 +88,15 @@ object Application extends ProveedorController with ProveedorRepositoryComponent
       )
     }
 
+    def addContact = Action {
+      Logger.info("Controller: agregando contacto")
+      val response = usaurioService.addContactToUser(contact,user)
+      if(response != null)
+        Ok(Json.obj("status" -> "OK"))
+      else
+        Ok(Json.obj("status" -> "KO"))
+    }
+
     def saveCategoria = Action(BodyParsers.parse.json) { request =>
       val b = request.body.validate[Categoria]
 

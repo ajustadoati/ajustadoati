@@ -44,6 +44,9 @@ trait UsuarioController extends Controller with UsuarioServiceComponentImpl with
        
     }
 
+    
+
+
 
     
   

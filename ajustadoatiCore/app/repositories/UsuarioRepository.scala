@@ -21,6 +21,8 @@ trait UsuarioRepositoryComponent {
         def tryFindByUser(user:String):Usuario
 
         def tryFindByUserAndPassword(user:String, password:String):Usuario
+
+        def addContactToUser(contact:String, user:String):String
         
     }
 }
@@ -82,6 +84,20 @@ trait UsuarioRepositoryComponentImpl extends UsuarioRepositoryComponent with Con
                     return lista.iterator.next
                 else
                     return null
+            
+        
+        }
+
+        override def addContactToUser(contact: String, user:String): Usuario = {
+            Logger.info("Agregando contacto")         
+            
+            val result = Cypher("MATCH (u:Usuario) WHERE u.user={user} MATCH (c:Usuario) WHERE c.user={contact} CREATE (u)-[:CONOCE]->(c)").on("user"->user, "contact"->contact).execute()
+
+            
+            if(result == true)
+                return "OK"
+            else
+                return null
             
         
         }
