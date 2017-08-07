@@ -88,7 +88,7 @@ object Application extends ProveedorController with ProveedorRepositoryComponent
       )
     }
 
-    def addContact = Action {
+    def addContact(contact:String, user: String) = Action {
       Logger.info("Controller: agregando contacto")
       val response = usuarioService.addContactToUser(contact,user)
       if(response != null)
