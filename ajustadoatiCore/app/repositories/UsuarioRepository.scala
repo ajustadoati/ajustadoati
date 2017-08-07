@@ -88,7 +88,7 @@ trait UsuarioRepositoryComponentImpl extends UsuarioRepositoryComponent with Con
         
         }
 
-        override def addContactToUser(contact: String, user:String): Usuario = {
+        override def addContactToUser(contact: String, user:String): String = {
             Logger.info("Agregando contacto")         
             
             val result = Cypher("MATCH (u:Usuario) WHERE u.user={user} MATCH (c:Usuario) WHERE c.user={contact} CREATE (u)-[:CONOCE]->(c)").on("user"->user, "contact"->contact).execute()
