@@ -15,61 +15,38 @@ angular.module('app.routes', [])
       templateUrl: 'templates/login.html',
       controller: 'loginCtrl'
     })
-        
-      
-    
-      
-        
+
     .state('registro', {
       url: '/homeRegister',
       templateUrl: 'templates/registro.html',
       controller: 'registroCtrl'
     })
-        
-      
-    
-      
-        
+
     .state('registroVendedor', {
       url: '/serverRegister',
       templateUrl: 'templates/registroVendedor.html',
       controller: 'registroVendedorCtrl'
     })
-        
-      
-    
-      
-        
     .state('registroUsuario', {
       url: '/userRegister',
       templateUrl: 'templates/registroUsuario.html',
       controller: 'registroUsuarioCtrl'
     })
-        
-      
-    
-      
-        
+
     .state('busqueda', {
       url: '/searchItem',
       templateUrl: 'templates/busqueda.html',
       controller: 'busquedaCtrl'
     })
-        
-      
+
     
-      
-        
+
     .state('resultadoBusqueda', {
       url: '/searchResult',
       templateUrl: 'templates/resultadoBusqueda.html',
       controller: 'resultadoBúSquedaCtrl'
     })
-        
-      
-    
-      
-        
+
     .state('tabsController.solicitudes', {
       url: '/requests',
       views: {
@@ -79,25 +56,81 @@ angular.module('app.routes', [])
         }
       }
     })
-        
-      
-    
-      
-        
-    .state('tabsController.ubicacion', {
-      url: '/location',
+
+     .state('tabsController.comerciante', {
+      url: '/requests/:user',
       views: {
-        'tab5': {
-          templateUrl: 'templates/ubicacion.html',
-          controller: 'ubicacionCtrl'
+        'tab4': {
+          templateUrl: 'templates/comerciante.html',
+          controller: 'comercianteCtrl'
         }
       }
     })
-        
-      
-    
-      
-        
+
+    .state('tabsController.detalleChat', {
+      url: '/detalleChat',
+      views: {
+        'tab4': {
+          templateUrl: 'templates/detalleChat.html',
+          controller: 'detalleChatCtrl'
+        }
+      }
+    })
+
+     .state('tabsController.mensajes', {
+      url: '/mensajes',
+      views: {
+        'mensajesTab': {
+          templateUrl: 'templates/mensajes.html',
+          controller: 'mensajesCtrl'
+        }
+      }
+    })
+
+     .state('tabsController.mensajeNuevo', {
+      url: '/mensajeNuevo',
+      views: {
+        'mensajesTab': {
+          templateUrl: 'templates/mensajeNuevo.html',
+          controller: 'mensajeNuevoCtrl'
+        }
+      }
+    })
+
+    .state('tabsController.favoritos', {
+      url: '/favoritos',
+      views: {
+        'tab5': {
+          templateUrl: 'templates/favoritos.html',
+          controller: 'favoritosCtrl'
+        }
+      }
+    })
+
+    .state('tabsController.favoritosChat', {
+      url: '/favoritosChat',
+      views: {
+        'tab5': {
+          templateUrl: 'templates/detalleChat.html',
+          controller: 'detalleChatCtrl'
+        }
+      }
+    })
+
+    .state('tabsController.detalleFavoritos', {
+      url: '/detalleFavoritos',
+      params:{
+            user:null
+      },
+      views: {
+        'tab5': {
+          templateUrl: 'templates/detalleFavoritos.html',
+          controller: 'detalleFavoritosCtrl',
+
+        }
+      }
+    })
+
     .state('tabsController.productos', {
       url: '/items',
       views: {
@@ -107,33 +140,23 @@ angular.module('app.routes', [])
         }
       }
     })
-        
-      
-    
-      
+
     .state('tabsController', {
       url: '/homeVendedor',
       abstract:true,
       templateUrl: 'templates/tabsController.html'
     })
-      
-    
-      
-        
-    .state('tabsController.perfil', {
-      url: '/profile',
+ 
+    .state('tabsController.ajustes', {
+      url: '/settings',
       views: {
         'tab7': {
-          templateUrl: 'templates/perfil.html',
-          controller: 'perfilCtrl'
+          templateUrl: 'templates/ajustes.html',
+          controller: 'settingsCtrl'
         }
       }
     })
-        
-      
-    
-      
-        
+
     .state('tabsController2.solicitud', {
       url: '/solicitudUser',
       views: {
@@ -143,11 +166,7 @@ angular.module('app.routes', [])
         }
       }
     })
-        
-      
-    
-      
-        
+
     .state('tabsController2.solicitudes2', {
       url: '/solicitudesUser',
       views: {
@@ -157,11 +176,7 @@ angular.module('app.routes', [])
         }
       }
     })
-        
-      
-    
-      
-        
+
     .state('tabsController2.ubicacionUsuario', {
       url: '/locationUser',
       views: {
@@ -171,25 +186,19 @@ angular.module('app.routes', [])
         }
       }
     })
-        
-      
-    
-      
+
     .state('tabsController2', {
       url: '/homeUser',
       abstract:true,
       templateUrl: 'templates/tabsController2.html'
     })
-      
-    
-      
-        
-    .state('tabsController2.perfilUsuario', {
-      url: '/profileUser',
+   
+    .state('tabsController2.ajustes', {
+      url: '/settings',
       views: {
         'tab11': {
-          templateUrl: 'templates/perfilUsuario.html',
-          controller: 'perfilUsuarioCtrl'
+          templateUrl: 'templates/ajustes.html',
+          controller: 'settingsCtrl'
         }
       }
     })
@@ -203,9 +212,10 @@ angular.module('app.routes', [])
       templateUrl: 'templates/detalleResultado.html',
       controller: 'detalleResultadoCtrl'
     })
+    
         
       
-    ;
+    
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/login');
