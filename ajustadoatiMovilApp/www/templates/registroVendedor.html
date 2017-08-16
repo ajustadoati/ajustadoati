@@ -11,10 +11,7 @@
                     <span class="input-label">Email</span>
                     <input type="text" ng-model="proveedor.usuario.email" placeholder="">
                 </label>
-                <label class="item item-input">
-                    <span class="input-label">Twitter</span>
-                    <input type="text" ng-model="proveedor.usuario.twitter" placeholder="">
-                </label>
+                
                 <label class="item item-input">
                     <span class="input-label">Telefono</span>
                     <input type="text" ng-model="proveedor.usuario.telefono" placeholder="">
@@ -29,18 +26,18 @@
                 </label>
             </ion-list>
             <multiselect
-  header-text="Header"
-  items="data"
-  text-property="nombre"
-  value-property="nombre"
-  is-translate="false"
-  index-translate="TAG_TRANSLATE"
-  text="Categor&iacute;as"
-  modal-template-url="lib/ionic-multiselect/dist/templates/modal-template.html"
-  template-url="lib/ionic-multiselect/dist/templates/item-template.html"
-  note-text="Note Text"
-  value-changed="onValueChanged(value)">
-</multiselect>
+              header-text="Header"
+              items="data"
+              text-property="nombre"
+              value-property="nombre"
+              is-translate="false"
+              index-translate="TAG_TRANSLATE"
+              text="Categor&iacute;as"
+              modal-template-url="lib/ionic-multiselect/dist/templates/modal-template.html"
+              template-url="lib/ionic-multiselect/dist/templates/item-template.html"
+              note-text="Note Text"
+              value-changed="onValueChanged(value)">
+            </multiselect>
 
             <input type="submit"
                        class="button button-stable button-block "
