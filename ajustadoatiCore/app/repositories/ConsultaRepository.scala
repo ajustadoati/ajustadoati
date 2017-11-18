@@ -41,6 +41,7 @@ trait ConsultaRepositoryComponentImpl extends ConsultaRepositoryComponent with C
          Logger.info("Guardando consulta"+consulta.usuario)
          Logger.info("Guardando consulta"+producto)
          Logger.info("Guardando consulta"+categoria)
+             val fecha = System.currentTimeMillis()
             //Cypher("""CREATE (cl:Cliente { nombre: {nombre}, email: {email}, twitter: {twitter}, telefono:{telefono}, latitud:{latitud}, longitud:{longitud}}) CREATE (pr:Producto {nombre:{pnombre}, descripcion:{descripcion}}) CREATE (cl)-[:BUSCO]->(pr)""").on("nombre"->cliente.nombre, "email"->cliente.email, "twitter"->cliente.twitter, "latitud"->cliente.latitud.toFloat, "longitud"->cliente.longitud.toFloat, "pnombre"->producto.nombre, "descripcion"->producto.descripcion).execute()
             //CREATE (pr:Producto {nombre:{pnombre}, descripcion:{descripcion}})//, "pnombre"->producto.nombre, "descripcion"->producto.descripcion
              val allUsuarios= Cypher("MATCH (n:Usuario) WHERE n.user={user} RETURN n.nombre as nombre, n.email as email, n.latitud as latitud, n.longitud as longitud, n.user as user, n.password as password, n.telefono as telefono").on("user"->consulta.usuario.user)().map{     
@@ -52,7 +53,7 @@ trait ConsultaRepositoryComponentImpl extends ConsultaRepositoryComponent with C
                 Logger.info("El usuario existe")
                 val usuario: Usuario = lista.iterator.next
 
-                val result = Cypher("""MATCH (c:Categoria) WHERE c.nombre={catnombre} MATCH (usr:Usuario) WHERE usr.user={user} CREATE (pr:Producto {nombre:{pnombre}, descripcion:{descripcion}}), (pr)-[:PERTENECE]->(c), (usr)-[:BUSCO]->(pr)""").on("catnombre"->categoria.nombre, "user"->usuario.user, "pnombre"->producto.nombre, "descripcion"->producto.descripcion).execute()
+                val result = Cypher("""MATCH (c:Categoria) WHERE c.nombre={catnombre} MATCH (usr:Usuario) WHERE usr.user={user} CREATE (pr:Producto {nombre:{pnombre}, descripcion:{descripcion}}), (pr)-[:PERTENECE]->(c), (usr)-[:BUSCO {fecha:{fecha}}]->(pr)""").on("catnombre"->categoria.nombre, "user"->usuario.user, "pnombre"->producto.nombre, "descripcion"->producto.descripcion).execute()
             
                 if(result==true)
                     return consulta
@@ -62,7 +63,7 @@ trait ConsultaRepositoryComponentImpl extends ConsultaRepositoryComponent with C
             else{
                 Logger.info("Se crea el usuario anonimo")
                    val usuario: Usuario = consulta.usuario
-                    val result = Cypher("""MATCH (c:Categoria) WHERE c.nombre={catnombre} CREATE (usr:Usuario { nombre: {nombre}, email: {email}, telefono:{telefono}, latitud:{latitud}, longitud:{longitud}, user:{user},password:{password}}) CREATE (pr:Producto {nombre:{pnombre}, descripcion:{descripcion}}), (pr)-[:PERTENECE]->(c), (usr)-[:BUSCO]->(pr)""").on("catnombre"->categoria.nombre, "nombre"->usuario.nombre, "email"->usuario.email, "telefono"->usuario.telefono, "latitud"->usuario.latitud.toDouble, "longitud"->usuario.longitud.toDouble, "user"->usuario.user,"password"->usuario.password, "pnombre"->producto.nombre, "descripcion"->producto.descripcion).execute()
+                    val result = Cypher("""MATCH (c:Categoria) WHERE c.nombre={catnombre} CREATE (usr:Usuario { nombre: {nombre}, email: {email}, telefono:{telefono}, latitud:{latitud}, longitud:{longitud}, user:{user},password:{password}}) CREATE (pr:Producto {nombre:{pnombre}, descripcion:{descripcion}}), (pr)-[:PERTENECE]->(c), (usr)-[:BUSCO {fecha:{fecha}}]->(pr)""").on("catnombre"->categoria.nombre, "nombre"->usuario.nombre, "email"->usuario.email, "telefono"->usuario.telefono, "latitud"->usuario.latitud.toDouble, "longitud"->usuario.longitud.toDouble, "user"->usuario.user,"password"->usuario.password, "pnombre"->producto.nombre, "descripcion"->producto.descripcion, "fecha"->fecha).execute()
             
                     if(result==true)
                         return consulta
