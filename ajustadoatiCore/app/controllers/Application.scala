@@ -9,6 +9,12 @@ import models.cliente.Cliente
 import models.producto.Producto
 import models.consulta.Consulta
 import models.usuario.Usuario
+import models.dispositivo.Dispositivo
+import models.dispositivoUsuario.DispositivoUsuario
+import services.dispositivo.DispositivoServiceComponent
+import services.dispositivo.DispositivoServiceComponentImpl
+
+import repositories.dispositivo.DispositivoRepositoryComponentImpl
 import models.usuarioLogin.UsuarioLogin
 import services.proveedor.ProveedorServiceComponentImpl
 import repositories.proveedor.ProveedorRepositoryComponentImpl
@@ -24,7 +30,7 @@ import controllers.proveedor.ProveedorController
 import org.anormcypher._
 import play.api.Logger
 
-object Application extends ProveedorController with ProveedorRepositoryComponentImpl with ProveedorServiceComponentImpl with CategoriaServiceComponentImpl with CategoriaRepositoryComponentImpl with ConsultaServiceComponentImpl with ConsultaRepositoryComponentImpl with UsuarioServiceComponentImpl with UsuarioRepositoryComponentImpl{
+object Application extends ProveedorController with ProveedorRepositoryComponentImpl with ProveedorServiceComponentImpl with CategoriaServiceComponentImpl with CategoriaRepositoryComponentImpl with ConsultaServiceComponentImpl with ConsultaRepositoryComponentImpl with UsuarioServiceComponentImpl with UsuarioRepositoryComponentImpl with DispositivoServiceComponentImpl with DispositivoRepositoryComponentImpl {
 
      def preflight(all: String) = Action {
         Ok("").withHeaders("Access-Control-Allow-Origin" -> "*",
@@ -36,7 +42,10 @@ object Application extends ProveedorController with ProveedorRepositoryComponent
   implicit val usuarioReads = Json.reads[Usuario]
   implicit val usuarioLoginWrites = Json.writes[UsuarioLogin]
   implicit val usuarioLoginReads = Json.reads[UsuarioLogin]
-
+  implicit val dispositivoWrites = Json.writes[Dispositivo]
+  implicit val dispositivoReads = Json.reads[Dispositivo]
+  implicit val dispositivoUsuarioWrites = Json.writes[DispositivoUsuario]
+  implicit val dispositivoUsuarioReads = Json.reads[DispositivoUsuario]
   def saveUsuario = Action(BodyParsers.parse.json) { request =>
       val b = request.body.validate[Usuario]
 
@@ -161,5 +170,43 @@ object Application extends ProveedorController with ProveedorRepositoryComponent
 
         Ok(Json.toJson(consultaService.list()))
     }
+
+    def saveDispositivoUsuario = Action(BodyParsers.parse.json){request =>
+      val b = request.body.validate[DispositivoUsuario]
+      b.fold(
+            errors => {
+          BadRequest(Json.obj("status" -> "OK", "message" -> JsError.toFlatJson(errors)))
+        },
+        dispositivoUsuario => {
+       
+          Logger.info("guardando dispositivo"+dispositivoUsuario)
+          val p=dispositivoService.createDispositivoUsuario(dispositivoUsuario)
+          
+          Created(Json.toJson(p))
+        }
+      )
+    }
+
+    def listDispositivoByUsuario(usuario:String)= Action {
+      Logger.info("Controller: buscando usuario"+usuario)
+        
+        val lista:List[Dispositivo]= dispositivoService.listDispositivoByUsuario(usuario)
+        if(lista != null)
+            Ok(Json.toJson(lista))
+        else{
+          Ok(Json.obj("status" -> "No existen dispositivos"))
+        }
+    }
+
+     def findDispositivoByUuid(uuid: String) = Action {
+      Logger.info("Controller: buscando dispositivo"+uuid)
+        val dispositivo = dispositivoService.getDispositivoByUuid(uuid)
+        if(dispositivo != null)
+            Ok(Json.toJson(dispositivo))
+        else
+            Ok(Json.obj("status" -> "Registro no Existe"))
+       
+    }
+
     
 }
