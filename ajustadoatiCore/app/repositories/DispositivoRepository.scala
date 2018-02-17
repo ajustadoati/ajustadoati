@@ -51,8 +51,8 @@ trait DispositivoRepositoryComponentImpl extends DispositivoRepositoryComponent 
             Logger.info("Repository: Buscando data:"+usuario)
            
 
-            val allDispositivos = Cypher("MATCH (cl:Usuario)-[r:AGREGO]->(n:Dispositivo) RETURN n.tipo, n.nombre, n.uuid")().map { row =>
-              (Dispositivo(row[String]("tipo"),row[String]("nombre"),row[String]("uuid")))
+            val allDispositivos = Cypher("MATCH (cl:Usuario {user:{usuario}})-[r:AGREGO]->(n:Dispositivo) RETURN n.tipo, n.nombre, n.uuid").on("usuario"->usuario)().map{ 
+              case CypherRow(tipo:String, nombre: String, uuid: String)=>Dispositivo(tipo,nombre,uuid)
             }
            
             val lista=allDispositivos.toList
