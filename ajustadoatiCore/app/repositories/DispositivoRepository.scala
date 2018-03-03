@@ -18,7 +18,7 @@ trait DispositivoRepositoryComponent {
 
         def getDispositivoByUuid(uuid:String):Dispositivo
 
-        def listDispositivoByListUsuarios(listUsuarios:String): List[Dispositivo]
+        def listDispositivoByListUsuarios(listUsuarios:String): List[DispositivoUsuario]
         
     }
 }
@@ -79,7 +79,7 @@ trait DispositivoRepositoryComponentImpl extends DispositivoRepositoryComponent 
                     return null
         }
 
-        override def listDispositivoByListUsuarios(listUsuarios:String): List[Dispositivo]={
+        override def listDispositivoByListUsuarios(listUsuarios:String): List[DispositivoUsuario]={
             Logger.info("Repository: Buscando data para usuarios:"+listUsuarios)
 
             val lista:List[String] = listUsuarios.split("&&").map(_.trim).toList
@@ -91,8 +91,8 @@ trait DispositivoRepositoryComponentImpl extends DispositivoRepositoryComponent 
             Logger.info("query: "+lista)
 
 
-            val allDispositivos = Cypher("""WITH {lista} as users MATCH (u:Usuario)-[:AGREGO]-(d:Dispositivo) WHERE u.user in users RETURN d.tipo as tipo, d.nombre as nombre, d.uuid as uuid""").on("lista"->lista)().collect{ 
-              case CypherRow(tipo:String, nombre: String, uuid: String)=>Dispositivo(tipo, nombre, uuid)
+            val allDispositivos = Cypher("""WITH {lista} as users MATCH (u:Usuario)-[:AGREGO]-(d:Dispositivo) WHERE u.user in users RETURN d.tipo as tipo, d.nombre as nombre, d.uuid as uuid, u.user as usuario""").on("lista"->lista)().collect{ 
+              case CypherRow(tipo:String, nombre: String, uuid: String,usuario:String)=>DispositivoUsuario(Dispositivo(tipo, nombre, uuid), usuario)
             }
            
             val listaDisp=allDispositivos.toList

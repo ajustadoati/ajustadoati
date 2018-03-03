@@ -211,7 +211,7 @@ object Application extends ProveedorController with ProveedorRepositoryComponent
       def listDispositivoByListUsuarios(listUsuarios:String)= Action {
       Logger.info("Controller: buscando dispositivos para usuarios"+listUsuarios)
         
-        val lista:List[Dispositivo]= dispositivoService.listDispositivoByListUsuarios(listUsuarios)
+        val lista:List[DispositivoUsuario]= dispositivoService.listDispositivoByListUsuarios(listUsuarios)
         if(lista != null)
             Ok(Json.toJson(lista))
         else{
