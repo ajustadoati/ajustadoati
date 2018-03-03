@@ -16,6 +16,8 @@ trait DispositivoServiceComponent {
 
         def getDispositivoByUuid(uuid:String):Dispositivo
 
+        def listDispositivoByListUsuarios(listUsuarios:String): List[Dispositivo]
+
     }
 
 }
@@ -38,6 +40,10 @@ trait DispositivoServiceComponentImpl extends DispositivoServiceComponent {
 
         override def getDispositivoByUuid(uuid:String): Dispositivo = {
             dispositivoRepository.getDispositivoByUuid(uuid)
+        }
+
+        override def listDispositivoByListUsuarios(listUsuarios:String): List[Dispositivo] = {
+            dispositivoRepository.listDispositivoByListUsuarios(listUsuarios)
         }
         
         

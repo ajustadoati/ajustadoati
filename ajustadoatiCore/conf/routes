@@ -19,7 +19,8 @@ GET      /ajustadoati/usuario/                           controllers.Application
 GET      /ajustadoati/usuario/:user                 controllers.Application.findUsuarioByUser(user: String)
 GET      /ajustadoati/usuario/:user/contacto/:contact    controllers.Application.addContact(contact: String, user:String)
 POST	 /ajustadoati/dispositivo/                       controllers.Application.saveDispositivoUsuario
-GET      /ajustadoati/dispositivo/usuario/:usuario                 controllers.Application.listDispositivoByUsuario(usuario: String)
+GET      /ajustadoati/dispositivo/usuario:usuario                 controllers.Application.listDispositivoByUsuario(usuario: String)
+GET      /ajustadoati/dispositivo/usuarios/:usuarios          controllers.Application.listDispositivoByListUsuarios(usuarios: String)
 GET      /ajustadoati/dispositivo/:uuid                 controllers.Application.findDispositivoByUuid(uuid: String)
 
 OPTIONS        /*all                                controllers.Application.preflight(all: String)
