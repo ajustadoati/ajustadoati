@@ -161,7 +161,7 @@ object Application extends ProveedorController with ProveedorRepositoryComponent
         Logger.info("guardando consulta"+consulta)
         val p=consultaService.createConsulta(consulta)
         //val lista:List[Proveedor]= proveedorService.listByCategoria(consulta.categoria.nombre)
-        if( p != null && p != 0)
+        if( p != 0)
           Created(Json.obj("id" -> p))
         else
           Ok(Json.obj("status" -> "KO"))
