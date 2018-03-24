@@ -7,7 +7,10 @@ GET      /books                           controllers.Application.listBooks
 POST     /books                           controllers.Application.saveBook
 GET      /ajustadoati/proveedor/:user                 controllers.Application.findProveedorByUser(user: String)
 GET      /ajustadoati/proveedor/                           controllers.Application.listProveedores
+GET      /ajustadoati/proveedor/categoria/:categoria          controllers.Application.listProveedoresByCategoria(categoria: String)
 GET      /ajustadoati/consulta/                           controllers.Application.listConsultas
+GET      /ajustadoati/consulta/:user                           controllers.Application.listConsultaByUser(user:String)
+GET      /ajustadoati/consulta/id/:id                           controllers.Application.getConsultaById(id:Long)
 POST     /ajustadoati/consulta/                           controllers.Application.saveConsulta
 GET      /ajustadoati/proveedor/categoria/:categoria      controllers.Application.listByCategoria(categoria: String)
 POST	 /ajustadoati/proveedor/                       controllers.Application.saveProveedor

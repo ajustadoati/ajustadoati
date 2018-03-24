@@ -15,9 +15,13 @@ trait ConsultaRepositoryComponent {
     
     trait ConsultaRepository {
         
-        def createConsulta(consulta: Consulta): Consulta
+        def createConsulta(consulta: Consulta): Long
 
         def list(): List[Consulta]
+
+        def listByUser(user:String):List[Consulta]
+
+        def getConsultaById(id:Long):Consulta
         
     }
 }
@@ -31,19 +35,14 @@ trait ConsultaRepositoryComponentImpl extends ConsultaRepositoryComponent with C
         
         
         
-       override def createConsulta(consulta: Consulta): Consulta = {
+       override def createConsulta(consulta: Consulta): Long = {
         
         
         val producto: Producto=consulta.producto
         val categoria: Categoria=consulta.categoria
 
-         Logger.info("Guardando consulta"+consulta)
-         Logger.info("Guardando consulta"+consulta.usuario)
-         Logger.info("Guardando consulta"+producto)
-         Logger.info("Guardando consulta"+categoria)
              val fecha = System.currentTimeMillis()
-            //Cypher("""CREATE (cl:Cliente { nombre: {nombre}, email: {email}, twitter: {twitter}, telefono:{telefono}, latitud:{latitud}, longitud:{longitud}}) CREATE (pr:Producto {nombre:{pnombre}, descripcion:{descripcion}}) CREATE (cl)-[:BUSCO]->(pr)""").on("nombre"->cliente.nombre, "email"->cliente.email, "twitter"->cliente.twitter, "latitud"->cliente.latitud.toFloat, "longitud"->cliente.longitud.toFloat, "pnombre"->producto.nombre, "descripcion"->producto.descripcion).execute()
-            //CREATE (pr:Producto {nombre:{pnombre}, descripcion:{descripcion}})//, "pnombre"->producto.nombre, "descripcion"->producto.descripcion
+             Logger.info("fecha:"+fecha)
              val allUsuarios= Cypher("MATCH (n:Usuario) WHERE n.user={user} RETURN n.nombre as nombre, n.email as email, n.latitud as latitud, n.longitud as longitud, n.user as user, n.password as password, n.telefono as telefono").on("user"->consulta.usuario.user)().map{     
                 case CypherRow(nombre: String, email: String, latitud:BigDecimal,longitud:BigDecimal, user:String, password:String, telefono:String)=>Usuario(nombre, email, latitud, longitud, user, password, telefono)     
             }
@@ -53,27 +52,29 @@ trait ConsultaRepositoryComponentImpl extends ConsultaRepositoryComponent with C
                 Logger.info("El usuario existe")
                 val usuario: Usuario = lista.iterator.next
 
-                val result = Cypher("""MATCH (c:Categoria) WHERE c.nombre={catnombre} MATCH (usr:Usuario) WHERE usr.user={user} CREATE (pr:Producto {nombre:{pnombre}, descripcion:{descripcion}}), (pr)-[:PERTENECE]->(c), (usr)-[:BUSCO {fecha:{fecha}}]->(pr)""").on("catnombre"->categoria.nombre, "user"->usuario.user, "pnombre"->producto.nombre, "descripcion"->producto.descripcion).execute()
-            
-                if(result==true)
-                    return consulta
-                else
-                    return null
+                val id = Cypher("MATCH (c:Categoria) WHERE c.nombre={catnombre} MATCH (usr:Usuario) WHERE usr.user={user} CREATE (pr:Producto {nombre:{pnombre}, descripcion:{descripcion}}), (pr)-[:PERTENECE]->(c), (usr)-[rb:BUSCO {fecha:{fecha}}]->(pr) return id(rb) as id").on("catnombre"->categoria.nombre, "user"->usuario.user, "pnombre"->producto.nombre, "descripcion"->producto.descripcion, "fecha"->fecha)().map{
+                    row => (row[Long]("id"))
                 }
+
+                val result=id.toList
+            
+                if(result.size > 0)
+                    return result.iterator.next
+                else
+                    return 0
+            }
             else{
                 Logger.info("Se crea el usuario anonimo")
-                   val usuario: Usuario = consulta.usuario
-                    val result = Cypher("""MATCH (c:Categoria) WHERE c.nombre={catnombre} CREATE (usr:Usuario { nombre: {nombre}, email: {email}, telefono:{telefono}, latitud:{latitud}, longitud:{longitud}, user:{user},password:{password}}) CREATE (pr:Producto {nombre:{pnombre}, descripcion:{descripcion}}), (pr)-[:PERTENECE]->(c), (usr)-[:BUSCO {fecha:{fecha}}]->(pr)""").on("catnombre"->categoria.nombre, "nombre"->usuario.nombre, "email"->usuario.email, "telefono"->usuario.telefono, "latitud"->usuario.latitud.toDouble, "longitud"->usuario.longitud.toDouble, "user"->usuario.user,"password"->usuario.password, "pnombre"->producto.nombre, "descripcion"->producto.descripcion, "fecha"->fecha).execute()
-            
-                    if(result==true)
-                        return consulta
-                    else
-                        return null    
-            }
-                            
-            
-        
-            
+                val usuario: Usuario = consulta.usuario
+                val id = Cypher("MATCH (c:Categoria) WHERE c.nombre={catnombre} CREATE (usr:Usuario { nombre: {nombre}, email: {email}, telefono:{telefono}, latitud:{latitud}, longitud:{longitud}, user:{user},password:{password}}) CREATE (pr:Producto {nombre:{pnombre}, descripcion:{descripcion}}), (pr)-[:PERTENECE]->(c), (usr)-[:BUSCO {fecha:{fecha}}]->(pr) return id(pr) as id").on("catnombre"->categoria.nombre, "nombre"->usuario.nombre, "email"->usuario.email, "telefono"->usuario.telefono, "latitud"->usuario.latitud.toDouble, "longitud"->usuario.longitud.toDouble, "user"->usuario.user,"password"->usuario.password, "pnombre"->producto.nombre, "descripcion"->producto.descripcion, "fecha"->fecha)().map{
+                    row => (row[Long]("id"))
+                }
+                val result=id.toList
+                if(result.size > 0)
+                    return result.iterator.next
+                else
+                    return 0   
+            } 
         }
 
         override def list(): List[Consulta]={
@@ -87,6 +88,42 @@ trait ConsultaRepositoryComponentImpl extends ConsultaRepositoryComponent with C
             val lista=allConsultas.toList
             Logger.info("lista"+lista)
             return lista
+        }
+
+        override def listByUser(user:String):List[Consulta]={
+            Logger.info("buscando data para usuario:"+user)
+
+            
+            val categorias = Cypher("Match (cl:Usuario {user:{usuario}})-[r:ATIENDE]->(c:Categoria) RETURN c.nombre as nombre").on("usuario"->user)().map{
+                case CypherRow(nombre:String)=>(nombre)
+            }
+            Logger.info("categorias:"+categorias.toList)
+    
+            val consultas = Cypher("WITH {lista} as cats Match (u:Usuario)-[rb:BUSCO]->(p:Producto)-[r:PERTENECE]->(c:Categoria) Where c.nombre in cats return u.nombre as nombre, u.email as email, u.telefono as telefono, u.latitud as latitud, u.longitud as longitud, id(rb) as id, p.nombre as pnombre, p.descripcion as pdescripcion, c.nombre as cnombre, c.descripcion as cdesc ORDER BY id(rb) DESC limit 7").on("lista"->categorias.toList)().map { row =>              
+                (Consulta(Usuario(row[String]("nombre"),row[String]("email"),row[BigDecimal]("latitud"),row[BigDecimal]("longitud"),row[String]("telefono"),row[String]("telefono"),row[String]("telefono")),(Producto(row[Long]("id"), row[String]("pnombre"),row[String]("pdescripcion"))),Categoria(row[String]("cnombre"),row[String]("cdesc"))))
+            }
+            val lista=consultas.toList
+
+            if(lista.size > 0){
+                return lista
+            }
+
+            return null
+            
+        }
+
+        override def getConsultaById(id:Long):Consulta={
+            Logger.info("Repository: buscando data:"+id)
+            val consultas = Cypher("Match (u:Usuario)-[rb:BUSCO]->(p:Producto)-[r:PERTENECE]->(c:Categoria) Where id(rb)={idConsulta} return u.nombre as nombre, u.email as email, u.telefono as telefono, u.latitud as latitud, u.longitud as longitud, id(rb) as id, p.nombre as pnombre, p.descripcion as pdescripcion, c.nombre as cnombre, c.descripcion as cdesc").on("idConsulta"->id)().map { row =>              
+                (Consulta(Usuario(row[String]("nombre"),row[String]("email"),row[BigDecimal]("latitud"),row[BigDecimal]("longitud"),row[String]("telefono"),row[String]("telefono"),row[String]("telefono")),(Producto(row[Long]("id"), row[String]("pnombre"),row[String]("pdescripcion"))),Categoria(row[String]("cnombre"),row[String]("cdesc"))))
+            }
+            val lista=consultas.toList
+
+            if(lista.size > 0){
+                return lista.iterator.next
+            }
+
+            return null
         }
         
     }

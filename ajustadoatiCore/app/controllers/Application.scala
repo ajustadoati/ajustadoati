@@ -13,7 +13,6 @@ import models.dispositivo.Dispositivo
 import models.dispositivoUsuario.DispositivoUsuario
 import services.dispositivo.DispositivoServiceComponent
 import services.dispositivo.DispositivoServiceComponentImpl
-
 import repositories.dispositivo.DispositivoRepositoryComponentImpl
 import models.usuarioLogin.UsuarioLogin
 import services.proveedor.ProveedorServiceComponentImpl
@@ -46,6 +45,7 @@ object Application extends ProveedorController with ProveedorRepositoryComponent
   implicit val dispositivoReads = Json.reads[Dispositivo]
   implicit val dispositivoUsuarioWrites = Json.writes[DispositivoUsuario]
   implicit val dispositivoUsuarioReads = Json.reads[DispositivoUsuario]
+
   def saveUsuario = Action(BodyParsers.parse.json) { request =>
       val b = request.body.validate[Usuario]
 
@@ -160,11 +160,26 @@ object Application extends ProveedorController with ProveedorRepositoryComponent
      
         Logger.info("guardando consulta"+consulta)
         val p=consultaService.createConsulta(consulta)
-        val lista:List[Proveedor]= proveedorService.listByCategoria(consulta.categoria.nombre)
-        Created(Json.toJson(lista))
+        //val lista:List[Proveedor]= proveedorService.listByCategoria(consulta.categoria.nombre)
+        if( p != null && p != 0)
+          Created(Json.obj("id" -> p))
+        else
+          Ok(Json.obj("status" -> "KO"))
       }
     )
   }
+
+    def listProveedoresByCategoria(categoria:String)= Action {
+      Logger.info("Controller: buscando proveedores"+categoria)
+        
+        val lista:List[Proveedor]= proveedorService.listByCategoria(categoria)
+        if(lista != null)
+            Ok(Json.toJson(lista))
+        else{
+          Ok(Json.obj("status" -> "No existen proveedores"))
+        }
+    }
+
     
     def listConsultas= Action {
 
@@ -198,7 +213,7 @@ object Application extends ProveedorController with ProveedorRepositoryComponent
         }
     }
 
-     def findDispositivoByUuid(uuid: String) = Action {
+    def findDispositivoByUuid(uuid: String) = Action {
       Logger.info("Controller: buscando dispositivo"+uuid)
         val dispositivo = dispositivoService.getDispositivoByUuid(uuid)
         if(dispositivo != null)
@@ -217,7 +232,27 @@ object Application extends ProveedorController with ProveedorRepositoryComponent
         else{
           Ok(Json.obj("status" -> "No existen dispositivos"))
         }
-    }
+      }
+
+     def listConsultaByUser(user:String)= Action {
+        Logger.info("Controller: buscando consultas para usuario"+user)
+        val lista:List[Consulta]=consultaService.listByUser(user)
+        if(lista != null)
+            Ok(Json.toJson(lista))
+        else{
+          Ok(Json.obj("status" -> "No existen consultas"))
+        }
+      }
+
+      def getConsultaById(id:Long)= Action {
+        Logger.info("Controller: buscando consulta por id:"+id)
+        val consulta = consultaService.getConsultaById(id)
+        if(consulta != null)
+            Ok(Json.toJson(consulta))
+        else{
+          Ok(Json.obj("status" -> "No existe consulta"))
+        }
+      }
 
     
 }
