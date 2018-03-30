@@ -66,7 +66,7 @@ trait ConsultaRepositoryComponentImpl extends ConsultaRepositoryComponent with C
             else{
                 Logger.info("Se crea el usuario anonimo")
                 val usuario: Usuario = consulta.usuario
-                val id = Cypher("MATCH (c:Categoria) WHERE c.nombre={catnombre} CREATE (usr:Usuario { nombre: {nombre}, email: {email}, telefono:{telefono}, latitud:{latitud}, longitud:{longitud}, user:{user},password:{password}}) CREATE (pr:Producto {nombre:{pnombre}, descripcion:{descripcion}}), (pr)-[:PERTENECE]->(c), (usr)-[:BUSCO {fecha:{fecha}}]->(pr) return id(pr) as id").on("catnombre"->categoria.nombre, "nombre"->usuario.nombre, "email"->usuario.email, "telefono"->usuario.telefono, "latitud"->usuario.latitud.toDouble, "longitud"->usuario.longitud.toDouble, "user"->usuario.user,"password"->usuario.password, "pnombre"->producto.nombre, "descripcion"->producto.descripcion, "fecha"->fecha)().map{
+                val id = Cypher("MATCH (c:Categoria) WHERE c.nombre={catnombre} CREATE (usr:Usuario { nombre: {nombre}, email: {email}, telefono:{telefono}, latitud:{latitud}, longitud:{longitud}, user:{user},password:{password}}) CREATE (pr:Producto {nombre:{pnombre}, descripcion:{descripcion}}), (pr)-[:PERTENECE]->(c), (usr)-[rb:BUSCO {fecha:{fecha}}]->(pr) return id(rb) as id").on("catnombre"->categoria.nombre, "nombre"->usuario.nombre, "email"->usuario.email, "telefono"->usuario.telefono, "latitud"->usuario.latitud.toDouble, "longitud"->usuario.longitud.toDouble, "user"->usuario.user,"password"->usuario.password, "pnombre"->producto.nombre, "descripcion"->producto.descripcion, "fecha"->fecha)().map{
                     row => (row[Long]("id"))
                 }
                 val result=id.toList
@@ -99,7 +99,7 @@ trait ConsultaRepositoryComponentImpl extends ConsultaRepositoryComponent with C
             }
             Logger.info("categorias:"+categorias.toList)
     
-            val consultas = Cypher("WITH {lista} as cats Match (u:Usuario)-[rb:BUSCO]->(p:Producto)-[r:PERTENECE]->(c:Categoria) Where c.nombre in cats return u.nombre as nombre, u.email as email, u.telefono as telefono, u.latitud as latitud, u.longitud as longitud, id(rb) as id, p.nombre as pnombre, p.descripcion as pdescripcion, c.nombre as cnombre, c.descripcion as cdesc ORDER BY id(rb) DESC limit 7").on("lista"->categorias.toList)().map { row =>              
+            val consultas = Cypher("WITH {lista} as cats Match (u:Usuario)-[rb:BUSCO]->(p:Producto)-[r:PERTENECE]->(c:Categoria) Where c.nombre in cats return u.nombre as nombre, u.email as email, u.telefono as telefono, u.latitud as latitud, u.longitud as longitud, id(rb) as id, p.nombre as pnombre, p.descripcion as pdescripcion, c.nombre as cnombre, c.descripcion as cdesc ORDER BY id(rb) DESC limit 2").on("lista"->categorias.toList)().map { row =>              
                 (Consulta(Usuario(row[String]("nombre"),row[String]("email"),row[BigDecimal]("latitud"),row[BigDecimal]("longitud"),row[String]("telefono"),row[String]("telefono"),row[String]("telefono")),(Producto(row[Long]("id"), row[String]("pnombre"),row[String]("pdescripcion"))),Categoria(row[String]("cnombre"),row[String]("cdesc"))))
             }
             val lista=consultas.toList
