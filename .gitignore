@@ -2,5 +2,5 @@ gitignore
 .DS_Store
 .gitignoreold
 .gitmodules
-ajustadoatiCore/target/*
+ajustadoatiCore/target/
 
