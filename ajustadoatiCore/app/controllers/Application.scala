@@ -57,7 +57,10 @@ object Application extends ProveedorController with ProveedorRepositoryComponent
        
           Logger.info("guardando usuario"+usuario)
           val p=usuarioService.createUsuario(usuario)
-          Created(Json.obj("status" -> "Registro Creado"))
+          if( p != null)
+              Created(Json.obj("status" -> "Registro Creado"))
+          else
+              Ok(Json.obj("status" -> "KO"))
         }
       )
     }
