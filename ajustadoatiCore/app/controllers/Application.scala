@@ -11,6 +11,11 @@ import models.consulta.Consulta
 import models.usuario.Usuario
 import models.dispositivo.Dispositivo
 import models.dispositivoUsuario.DispositivoUsuario
+import models.criptomoneda.Criptomoneda
+import models.criptomonedaUsuario.CriptomonedaUsuario
+import services.criptomoneda.CriptomonedaServiceComponent
+import services.criptomoneda.CriptomonedaServiceComponentImpl
+import repositories.criptomoneda.CriptomonedaRepositoryComponentImpl
 import services.dispositivo.DispositivoServiceComponent
 import services.dispositivo.DispositivoServiceComponentImpl
 import repositories.dispositivo.DispositivoRepositoryComponentImpl
@@ -29,7 +34,8 @@ import controllers.proveedor.ProveedorController
 import org.anormcypher._
 import play.api.Logger
 
-object Application extends ProveedorController with ProveedorRepositoryComponentImpl with ProveedorServiceComponentImpl with CategoriaServiceComponentImpl with CategoriaRepositoryComponentImpl with ConsultaServiceComponentImpl with ConsultaRepositoryComponentImpl with UsuarioServiceComponentImpl with UsuarioRepositoryComponentImpl with DispositivoServiceComponentImpl with DispositivoRepositoryComponentImpl {
+object Application extends ProveedorController with ProveedorRepositoryComponentImpl with ProveedorServiceComponentImpl with CategoriaServiceComponentImpl with CategoriaRepositoryComponentImpl with ConsultaServiceComponentImpl with ConsultaRepositoryComponentImpl with UsuarioServiceComponentImpl with UsuarioRepositoryComponentImpl 
+with DispositivoServiceComponentImpl with DispositivoRepositoryComponentImpl with CriptomonedaServiceComponentImpl with CriptomonedaRepositoryComponentImpl{
 
      def preflight(all: String) = Action {
         Ok("").withHeaders("Access-Control-Allow-Origin" -> "*",
@@ -45,6 +51,10 @@ object Application extends ProveedorController with ProveedorRepositoryComponent
   implicit val dispositivoReads = Json.reads[Dispositivo]
   implicit val dispositivoUsuarioWrites = Json.writes[DispositivoUsuario]
   implicit val dispositivoUsuarioReads = Json.reads[DispositivoUsuario]
+  implicit val criptomonedaWrites = Json.writes[Criptomoneda]
+  implicit val criptomonedaReads = Json.reads[Criptomoneda]
+  implicit val criptomonedaUsuarioWrites = Json.writes[CriptomonedaUsuario]
+  implicit val criptomonedaUsuarioReads = Json.reads[CriptomonedaUsuario]
 
   def saveUsuario = Action(BodyParsers.parse.json) { request =>
       val b = request.body.validate[Usuario]
@@ -256,6 +266,33 @@ object Application extends ProveedorController with ProveedorRepositoryComponent
           Ok(Json.obj("status" -> "No existe consulta"))
         }
       }
+
+    def saveCriptomonedaUsuario = Action(BodyParsers.parse.json){request =>
+      val b = request.body.validate[CriptomonedaUsuario]
+      b.fold(
+            errors => {
+          BadRequest(Json.obj("status" -> "OK", "message" -> JsError.toFlatJson(errors)))
+        },
+        criptomonedaUsuario => {
+       
+          Logger.info("guardando criptomoneda"+criptomonedaUsuario)
+          val p=criptomonedaService.createCriptomonedaUsuario(criptomonedaUsuario)
+          
+          Created(Json.toJson(p))
+        }
+      )
+    }
+
+    def listCriptomonedaByUsuario(usuario:String)= Action {
+      Logger.info("Controller: buscando usuario"+usuario)
+        
+        val lista:List[Criptomoneda]= criptomonedaService.listCriptomonedaByUsuario(usuario)
+        if(lista != null)
+            Ok(Json.toJson(lista))
+        else{
+          Ok(Json.obj("status" -> "No existen criptomonedas"))
+        }
+    }
 
     
 }
