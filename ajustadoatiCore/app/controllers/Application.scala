@@ -277,8 +277,15 @@ with DispositivoServiceComponentImpl with DispositivoRepositoryComponentImpl wit
        
           Logger.info("guardando criptomoneda"+criptomonedaUsuario)
           val p=criptomonedaService.createCriptomonedaUsuario(criptomonedaUsuario)
+          if(p != null){
+            Created(Json.toJson(p))
+          }else{
+            Ok(Json.obj("status" -> "registro no creado"))
+          }
+
+
           
-          Created(Json.toJson(p))
+          
         }
       )
     }
