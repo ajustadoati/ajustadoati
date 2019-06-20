@@ -24,12 +24,13 @@ ADD         app /root/app
 ADD         lib /root/lib
 ADD         conf /root/conf
 #ADD         public /root/public
+ADD 	    key /root/key
 ADD         build.sbt /root/
 ADD         project/plugins.sbt /root/project/
 ADD         project/build.properties /root/project/
 
 # TEST AND BUILD THE PROJECT -- FAILURE WILL HALT IMAGE CREATION
-#RUN         cd /root; /usr/local/activator/activator run
+#RUN         cd /root; /usr/local/activator/activator stage
 #RUN         rm /root/target/universal/stage/bin/*.bat
 
 # TESTS PASSED -- CONFIGURE IMAGE

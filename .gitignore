@@ -3,3 +3,5 @@
 .gitmodules
 ajustadoatiCore/target/
 ajustadoatiMovilApp/
+ajustadoatiCore/key/keystore.jks
+ajustadoatiCore/lib/org.scala-lang.scala-library-2.10.4.jar
