@@ -2,4 +2,5 @@
 .gitignoreold
 .gitmodules
 ajustadoatiCore/target/
+ajustadoatiCore/project/
 ajustadoatiMovilApp/
